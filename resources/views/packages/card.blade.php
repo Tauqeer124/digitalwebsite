@@ -95,11 +95,11 @@
                     <p>Price: {{ $package->price }}</p>
                     <p>Commission Percentage: {{ $package->commission_percentage }}</p>
                     <!-- Add more details fields as needed -->
-                    <form method="post" action="{{ route('package.buy') }}">
-                        @csrf
+            
+                        
                         <input type="hidden" name="package_id" value="{{ $package->id }}">
-                        <button type="submit" class="buy-button">Buy</button>
-                    </form>
+                        <button type="button" class="buy-button" onclick="buyPackage('{{ route('make.payment') }}', '{{ $package->id }}')">Buy</button>
+                
                 </div>
             </div>
         @endforeach
@@ -119,9 +119,9 @@
         openDetailsId = details.style.display === 'none' ? null : packageId;
     }
 
-    function buyPackage(packageId) {
-        // Handle the buy package logic here
-        alert('Package ' + packageId + ' purchased!');
+    function buyPackage(paymentRoute, packageId) {
+        // Navigate to the make.payment route with the packageId
+        window.location.href = paymentRoute + "?package_id=" + packageId;
     }
 </script>
 

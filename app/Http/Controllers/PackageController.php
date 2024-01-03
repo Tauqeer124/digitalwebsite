@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Tree;
+use App\Models\User;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,21 +65,22 @@ class PackageController extends Controller
         $packages = Package::all();
         return view('packages.card', compact('packages'));
     }
-    public function buy(Request $req){
+    public function buy(Request $req)
+    {
         $package = Package::findOrFail($req->package_id);
         $package_id = $package->id;
-// dd($package_id);
-        $user_id = Auth::user()->id;
-        // dd($user);
-        $tree = new Tree();
-        $tree->user_id = $user_id;
-        $tree->package_id = $package_id;
-        // dd($tree);
-        $tree->save();
-        
+    
+          
+          return redirect()->route('make.payment', [
+            'packageId' => $package_id,
+            'accountTitle' => 'Digital Ocean',
+            'accountNumber' => '458-9658-5874', // Replace with actual account number
+        ]);
+            
 
 
     }
+
     public function link(){
         return view('referlink');
     }

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Course;
+use App\Models\Tree;
+
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,8 +18,13 @@ class Package extends Model
         'commission_percentage',
     ];
 
-    public function courses()
+    public function user()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function trees()
+    {
+        return $this->hasMany(Tree::class);
     }
 }

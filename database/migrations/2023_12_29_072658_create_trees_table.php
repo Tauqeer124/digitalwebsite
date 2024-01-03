@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('trees', function (Blueprint $table) {
             $table->id('tree_id');
-            $table->integer('parent_id')->nullable();
+            $table->string('parent_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('package_id');
             $table->foreign('package_id')->references('id')->on('packages');
             $table->integer('block_id')->nullable();
             $table->integer('member_id')->nullable();
-            $table->integer('senior_id')->nullable();
+            $table->string('senior_id')->nullable();
             $table->timestamps();
         });
     }

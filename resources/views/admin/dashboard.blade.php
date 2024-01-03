@@ -7,8 +7,8 @@
         <div class="card card-body bg-blue-400 has-bg-image">
             <div class="media">
                 <div class="media-body">
-                    <h3 class="mb-0">ggggggggggggg</h3>
-                                        <span class="text-uppercase font-size-xs font-weight-bold">Total Students</span>
+                    <h3 class="mb-0">{{ $total_package }}</h3>
+                                        <span class="text-uppercase font-size-xs font-weight-bold">Total Packages</span>
                 </div>
 
                 <div class="ml-3 align-self-center">
@@ -23,7 +23,7 @@
             <div class="media">
                 <div class="media-body">
                     <h3 class="mb-0"></h3>
-                    <span class="text-uppercase font-size-xs">Total Teachers</span>
+                    <span class="text-uppercase font-size-xs">Total Refferrs</span>
                 </div>
 
                 <div class="ml-3 align-self-center">

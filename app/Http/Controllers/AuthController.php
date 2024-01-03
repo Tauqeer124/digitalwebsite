@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,23 +14,38 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+  
+
     public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
+    
         $credentials = $request->only('email', 'password');
+        
         if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('home'))->with('success', 'You have logged in');
+            // Check if there is a payment record with status 'approved' for the current user
+            $payment = Payment::where('user_id', auth()->user()->id)->where('status', 'approved')->first();
+    
+            if ($payment) {
+                // Redirect to the home route
+                return redirect()->intended(route('home'))->with('success', 'You have logged in');
+            } else {
+                // Redirect to the package.card route
+                return redirect()->intended(route('package.card'))->with('success', 'You have logged in');
+            }
         }
+    
+        return redirect(route('login-form'))->with('error', 'Oops! You have entered invalid credentials');
+    }
+    
+    public function register_form($referral = null){
 
-        return redirect(route('login-form'))->with('error', 'Opps! You have entered invalid credentials');
+        return view('auth.register',compact('referral'));
     }
-    public function register_form()
-    {
-        return view('auth.register');
-    }
+    
     public function register(Request $request)
     {
         $request->validate([
@@ -44,6 +60,11 @@ class AuthController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
+        $referral = $request->referrer_id;
+    
+        if($referral != null){
+            $user->referrer_id = $referral;
+        }
 
         $user->save();
         if ($user) {

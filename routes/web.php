@@ -1,11 +1,16 @@
 <?php
 
+use App\Models\Payment;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\PackageController;
-use Illuminate\Foundation\PackageManifest;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +34,7 @@ Route::post('admin/register',[AdminController::class, 'Admin_register'])->name('
 Route::get('admin/login',[AdminController::class, 'Admin_Login_Form'])->name('admin.login-form');
 Route::post('admin/login',[AdminController::class, 'Admin_Login'])->name('admin.login');
 //user login/register
-Route::get('/register',[AuthController::class, 'register_form'])->name('register-form');
+Route::get('/register/{referral?}',[AuthController::class, 'register_form'])->name('register-form');
 Route::post('/register',[AuthController::class, 'register'])->name('register');
 
 Route::get('/login',[AuthController::class, 'login_form'])->name('login-form');
@@ -48,7 +53,25 @@ Route::get('/package/card' , [PackageController::class, 'card'])->name('package.
 Route::post('package/buy',[PackageController::class, 'buy'])->name('package.buy');
 
 //
-Route::get('get-link',[PackageController::class, 'link']);
+Route::get('get-link',[PackageController::class, 'link'])->name('show.link');
+//wallet routes
+Route::get('/wallet', [WalletController::class, 'show'])->name('show.wallet');
+//payment
+// web.php
+Route::get('submit-payment',[PaymentController::class,'payment_form'])->name('make.payment');
+Route::post('/submit-payment', [PaymentController::class,'submitPayment'])->name('submitPayment');
+// web.php
+
+Route::get('/payment-submitted', function () {
+    // dd('kk');
+    $user_id = Auth::user()->id;
+    
+    $payment = Payment::where('user_id', $user_id)->first();    return view('payment_submitted',compact('payment'));
+})->name('paymentSubmitted');
+//payment for admin 
+    Route::get('payment/status',[PaymentController::class, 'viewPayments'])->name('show.payments');
+    Route::post('/admin/change-payment-status/{paymentId}/{newStatus}', [PaymentController::class,'changePaymentStatus'])->name('admin.changePaymentStatus');
+
 
 
 

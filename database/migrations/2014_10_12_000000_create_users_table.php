@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->integer('referrer_id')->nullable();
+            $table->string('referrer_id')->nullable();
             $table->string('password');
             $table->boolean('isAdmin')->default(false);
             $table->rememberToken();
