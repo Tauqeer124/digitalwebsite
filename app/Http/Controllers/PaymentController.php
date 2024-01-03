@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Wallet;
 
 use App\Models\Tree;
 use App\Models\User;
@@ -51,6 +52,8 @@ class PaymentController extends Controller
         $package = Package::find($request->package_id);
     
         $package_id = $package->id;
+        $packagePrice = $package->price;
+
 
         $user_id = Auth::user()->id;
 
@@ -100,6 +103,32 @@ class PaymentController extends Controller
             }
         }
         $tree->save();
+
+$user = Auth::user();
+$user_id = $user->id;
+// dd($user_id);
+// dd($user);
+    $wallet = New Wallet();
+
+    // Determine commission rate based on the package
+    $commissionRate = 0;
+    if ($packagePrice === 1) {
+        $commissionRate = 0.65;
+    } elseif ($packagePrice === 2) {
+        $commissionRate = 0.70;
+    } elseif ($packagePrice === 3) {
+        $commissionRate = 0.75;
+    } elseif ($packagePrice === 4) {
+        $commissionRate = 0.80;
+    }
+    // dd($wallet);
+
+    // Calculate and update the wallet balance
+    $commissionAmount = $packagePrice * $commissionRate;
+    // dd($user_id);
+    // $wallet->user_id = $user_id;
+    $wallet->Total_balance += $commissionAmount;
+    $wallet->save();
 
 
 

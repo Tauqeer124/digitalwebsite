@@ -1,15 +1,15 @@
 <div class="navbar navbar-expand-md navbar-dark bg-primary" style="background-color:#133d67 !important; color: black !important; ">
     <div class="" >
         <a href="" class="d-inline-block">
-            <img src="" class="rounded-circle" width="80"  alt="">
+            <img src="{{ asset('global_assets/images/gwlogo.png') }}" class="rounded-circle" width="80"  alt="">
         {{-- <h4 class="text-bold text-white">CHMSC SYSTEM</h4> --}}
         </a>
     </div>
-  {{--  <div class="navbar-brand">
-        <a href="index.html" class="d-inline-block">
-            <img src="{{ asset('global_assets/images/logo_light.png') }}" alt="">
+   {{-- <div class="navbar-brand">
+        <a href="" class="d-inline-block">
+            <img src="{{ asset('global_assets/images/gwlogo.png') }}" alt="">
         </a>
-    </div>--}}
+    </div> --}}
 
     <div class="d-md-none">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">

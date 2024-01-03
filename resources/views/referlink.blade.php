@@ -1,103 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refer a Friend</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column; /* Added flex-direction property */
-            align-items: center;
-            justify-content: flex-start; /* Align items at the top */
-            height: 100vh;
-        }
+@extends('layouts.master')
+@section('page_title', 'Refer Link')
+@section('content')
+<style>
+    h1 {
+        color: #333;
+    }
 
-        .container {
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            max-width: 400px;
-            width: 100%;
-            margin-top: 20px; /* Add margin to the top */
-        }
+    input {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
 
-        h1 {
-            color: #333;
-        }
+    button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
 
-        input {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
+    button:hover {
+        background-color: #45a049;
+    }
 
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+    p {
+        color: #666;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
 
-        p {
-            color: #666;
-        }
+    a:hover {
+        text-decoration: underline;
+    }
 
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
+    button.back-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 3px;
         
-        button.back-button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
+        transition: background-color 0.3s;
+    }
 
-        button.back-button:hover {
-            background-color: #0056b3;
-        }
+    button.back-button:hover {
+        background-color: #0056b3;
+    }
 
-    </style>
+</style>
 </head>
-<body>
-    @php 
-    $referralLink = 'http://127.0.0.1:8000/register/'.auth()->user()->id;
-    @endphp
-    <button class="back-button" onclick="goBack()">Back</button>
-    <div class="container">
-        <h1>Refer a Friend</h1>
+
+@php
+$referralLink = 'http://127.0.0.1:8000/register/'.auth()->user()->id;
+@endphp
+<button class="back-button" onclick="goBack()">Back</button>
+<div class="card mt-3">
+    <div class="card-header header-elements-inline">
+        <h6 class="card-title">All Payments</h6>
+    </div>
+    <div class="card-body">
 
         <input type="text" id="referralLinkInput" value="{{ $referralLink }}" readonly>
 
@@ -117,9 +95,12 @@
             document.execCommand("copy");
             alert("Copied the referral link: " + copyText.value);
         }
+
         function goBack() {
             window.history.back();
         }
+
     </script>
-</body>
-</html>
+
+    </html>
+    @endsection
