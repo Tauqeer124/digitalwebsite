@@ -53,6 +53,7 @@ class PaymentController extends Controller
     
         $package_id = $package->id;
         $packagePrice = $package->price;
+        // dd($packagePrice);
 
 
         $user_id = Auth::user()->id;
@@ -112,25 +113,102 @@ $user_id = $user->id;
 
     // Determine commission rate based on the package
     $commissionRate = 0;
-    if ($packagePrice === 1) {
+    if ($packagePrice == 1000.00) {
         $commissionRate = 0.65;
-    } elseif ($packagePrice === 2) {
+    } elseif ($packagePrice === 3000.00) {
         $commissionRate = 0.70;
-    } elseif ($packagePrice === 3) {
+    } elseif ($packagePrice == 5000.00) {
+        // dd('fjfkjf');
         $commissionRate = 0.75;
-    } elseif ($packagePrice === 4) {
+    } elseif ($packagePrice === 10000.00) {
         $commissionRate = 0.80;
     }
     // dd($wallet);
 
     // Calculate and update the wallet balance
     $commissionAmount = $packagePrice * $commissionRate;
-    // dd($user_id);
-    // $wallet->user_id = $user_id;
-    $wallet->Total_balance += $commissionAmount;
+    // dd($commissionAmount);
+
+// Get the current block and member id for the user's referral link
+$currentBlockInfo = Tree::where('parent_id', $referral_id)
+    ->orderByDesc('created_at')
+    ->first();
+
+if ($currentBlockInfo) {
+    $currentBlock = $currentBlockInfo->block_id;
+    $currentMemberId = $currentBlockInfo->member_id;
+
+    // Check the member id within the current block
+    switch ($currentMemberId) {
+        case 1:
+            // First member, give 65% of the 1st package
+     
+            $wallet->user_id = $tree->parent_id;
+            $wallet->Total_balance = $commissionAmount;
+
+          
+        
+            break;
+        case 2:
+            // Second member, give 70% of the 2nd package
+         
+            $wallet->user_id = $tree->parent_id;
+            $wallet->Total_balance = $commissionAmount;
+
+            break;
+        case 3:
+            // Third member, give 75% of the 3rd package
+          
+            // dd($commissionAmount);
+            $wallet->user_id = $tree->senior_id ?? 1;
+            $wallet->Total_balance = $commissionAmount;
+        
+         
+            break;
+        case 4:
+        case 5:
+            // Fourth or fifth member, give 80% of the 4th package
+           
+            $wallet->user_id = $tree->parent_id;
+            $wallet->Total_balance = $commissionAmount;
+          
+        
+            break;
+        case 6:
+            $ccommissionRate = 0;
+    if ($packagePrice == 1000.00) {
+        $ccommissionRate = 0.30;
+        $ccommissionAmount = $packagePrice * $ccommissionRate;
+        $wallet->user_id = 1;
+                $wallet->Total_balance = $ccommissionAmount;
+
+    } elseif ($packagePrice === 3000.00) {
+        $ccommissionRate = 0.31;
+        $ccommissionAmount = $packagePrice * $ccommissionRate;
+        $wallet->user_id = 1;
+                $wallet->Total_balance = $ccommissionAmount;
+    } elseif ($packagePrice == 5000.00) {
+        // dd('fjfkjf');
+        $ccommissionRate = 0.32;
+        $ccommissionAmount = $packagePrice * $ccommissionRate;
+        $wallet->user_id = 1;
+                $wallet->Total_balance = $ccommissionAmount;
+    } elseif ($packagePrice === 10000) {
+        $ccommissionRate = 0.33;
+        $ccommissionAmount = $packagePrice * $ccommissionRate;
+        $wallet->user_id = 1;
+                $wallet->Total_balance = $ccommissionAmount;
+    }
+    
+            break;
+        default:
+            // Other cases can be handled as needed
+            break;
+    }
+
+    // Update the wallet balance
     $wallet->save();
-
-
+}
 
         return redirect()->route('paymentSubmitted');
     }

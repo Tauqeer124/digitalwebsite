@@ -44,25 +44,7 @@
         text-decoration: underline;
     }
 
-    button.back-button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 15px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 3px;
-        
-        transition: background-color 0.3s;
-    }
 
-    button.back-button:hover {
-        background-color: #0056b3;
-    }
 
 </style>
 </head>
@@ -70,10 +52,9 @@
 @php
 $referralLink = 'http://127.0.0.1:8000/register/'.auth()->user()->id;
 @endphp
-<button class="back-button" onclick="goBack()">Back</button>
 <div class="card mt-3">
     <div class="card-header header-elements-inline">
-        <h6 class="card-title">All Payments</h6>
+        <h6 class="card-title">Referal Link</h6>
     </div>
     <div class="card-body">
 
@@ -96,9 +77,7 @@ $referralLink = 'http://127.0.0.1:8000/register/'.auth()->user()->id;
             alert("Copied the referral link: " + copyText.value);
         }
 
-        function goBack() {
-            window.history.back();
-        }
+        
 
     </script>
 

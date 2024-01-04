@@ -22,7 +22,7 @@
         <div class="card card-body bg-danger-400 has-bg-image">
             <div class="media">
                 <div class="media-body">
-                    <h3 class="mb-0"></h3>
+                    <h3 class="mb-0">{{$refer}}</h3>
                     <span class="text-uppercase font-size-xs">Total Refferrs</span>
                 </div>
 
@@ -71,8 +71,8 @@
                 </div>
 
                 <div class="media-body text-right">
-                    <h3 class="mb-0"></h3>
-                    <span class="text-uppercase font-size-xs">Total Income</span>
+                    <h3 class="mb-0">{{ $balance }}</h3>
+                    <span class="text-uppercase font-size-xs">Wallet balance</span>
                 </div>
             </div>
         </div>
