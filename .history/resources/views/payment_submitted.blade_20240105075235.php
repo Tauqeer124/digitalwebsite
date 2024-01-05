@@ -14,7 +14,7 @@
         <div class="card-body">
             @if($payment->status == 'pending')
                 <h5 class="card-title text-warning">Pending Verification</h5>
-                <p class="card-text">Your payment verification is Pending.. Admin will verify it shortly.</p>
+                <p class="card-text">Your payment verification is Pending. Admin will verify it shortly.</p>
             @elseif($payment->status == 'approved')
                 <h5 class="card-title text-success">Payment Approved</h5>
                 <p class="card-text">Your payment has been approved. You will be redirected to the home page.</p>
