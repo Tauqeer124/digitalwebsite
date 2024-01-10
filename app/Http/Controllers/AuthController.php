@@ -49,10 +49,10 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|min:6',
             'email' => 'required|email',
             'phone' => 'required',
-            'password' => 'required|min:8',
+            'password' => 'required|min:6',
 
         ]);
         $user = new User();

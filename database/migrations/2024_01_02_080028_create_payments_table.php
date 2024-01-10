@@ -16,10 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('image')->nullable(); // Assuming you'll store the image path or filename
-            $table->string('transcation_id');
+            $table->integer('transcation_id');
             $table->string('account_title');
-            $table->string('account_no');
+            $table->integer('account_no');
             $table->enum('account_type',['Bank','Jazz-Cash','Easypaisa']);
+            $table->integer('amount');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
 
 

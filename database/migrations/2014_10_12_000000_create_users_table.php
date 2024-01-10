@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('referrer_id')->nullable();
             $table->string('password');
             $table->boolean('isAdmin')->default(false);
+            $table->string('status')->default('active');
             $table->rememberToken();
             $table->timestamps();
         });

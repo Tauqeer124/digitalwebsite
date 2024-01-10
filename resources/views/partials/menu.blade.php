@@ -55,16 +55,36 @@
                 {{-- Academics --}}
                 @if (Auth::user()->isAdmin == 1)
                     <li
-                        class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['package.index', 'package.edit', 'package.card', 'package.destroy']) ? 'nav-item-expanded nav-item-open' : '' }} ">
-                        <a href="#" class="nav-link"><i class="icon-graduation2"></i> <span> Academics</span></a>
+                        class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['package.index', 'package.add', ]) ? 'nav-item-expanded nav-item-open' : '' }} ">
+                        <a href="#" class="nav-link"><i class="icon-graduation2"></i> <span> Packages</span></a>
 
                         <ul class="nav nav-group-sub" data-submenu-title="Manage Academics">
                             {{-- Timetables --}}
                             <li class="nav-item"><a href="{{ route('package.index') }}"
-                                    class="nav-link {{ in_array(Route::currentRouteName(), ['package.index']) ? 'active' : '' }}">Packages</a>
+                                    class="nav-link {{ in_array(Route::currentRouteName(), ['package.index']) ? 'active' : '' }}"><i class="icon-box"></i> view Packages</a>
                             </li>
+                            <li class="nav-item"><a href="{{ route('package.add') }}"
+                                class="nav-link {{ in_array(Route::currentRouteName(), ['package.add']) ? 'active' : '' }}"><i class="icon-box"></i> Add Packages</a>
+                        </li>
                         </ul>
                     </li>
+                    <li
+                    class="nav-item nav-item-submenu {{ in_array(Route::currentRouteName(), ['user.all', 'user.block', 'user.review', ]) ? 'nav-item-expanded nav-item-open' : '' }} ">
+                    <a href="#" class="nav-link"><i class="icon-users"></i> <span> Manage Users</span></a>
+
+                    <ul class="nav nav-group-sub" data-submenu-title="Manage Academics">
+                        {{-- Timetables --}}
+                        <li class="nav-item"><a href="{{ route('user.all') }}"
+                                class="nav-link {{ in_array(Route::currentRouteName(), ['user.all']) ? 'active' : '' }}"><i class="icon-user"></i>Active users</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ route('user.block') }}"
+                            class="nav-link {{ in_array(Route::currentRouteName(), ['user.block']) ? 'active' : '' }}"><i class="icon-user"></i>Block users</a>
+                        </li>
+                        <li class="nav-item"><a href="{{ route('user.review') }}"
+                            class="nav-link {{ in_array(Route::currentRouteName(), ['user.review']) ? 'active' : '' }}"><i class="icon-user"></i>Users under review</a>
+                        </li>
+                    </ul>
+                </li>
             
 
             @endif
@@ -78,12 +98,22 @@
                     class="nav-link {{ in_array(Route::currentRouteName(), ['payments']) ? 'active' : '' }}"><i
                     class="fas fa-dollar-sign"></i> <span>Payments</span></a>
             </li>
+     
+         
             @endif
+         
             <li class="nav-item">
-                <a href="{{ route('show.wallet') }}"
-                    class="nav-link {{ in_array(Route::currentRouteName(), ['wallet']) ? 'active' : '' }}"><i
-                        class="icon-book"></i> <span>My Wallet</span></a>
+                @if(auth()->user()->isAdmin == 1)
+                    <a href="{{ route('show.all.wallets') }}" class="nav-link {{ Route::currentRouteName() == 'show.all.wallets' ? 'active' : '' }}">
+                        <i class="icon-book"></i> <span>All User Wallets</span>
+                    </a>
+                @else
+                    <a href="{{ route('show.wallet') }}" class="nav-link {{ Route::currentRouteName() == 'wallet' ? 'active' : '' }}">
+                        <i class="icon-book"></i> <span>My Wallet</span>
+                    </a>
+                @endif
             </li>
+            
             @if(Auth::user()->isAdmin == 0)
             <li class="nav-item">
                 <a href="{{ route('package.card') }}" class="nav-link {{ Route::is('package.card') ? 'active' : '' }}">

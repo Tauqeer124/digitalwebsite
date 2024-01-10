@@ -45,6 +45,10 @@
                     <label for="account_number" class="form-label">Account Number:</label>
                     <input type="number" class="form-control" name="account_no" required>
                 </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount:</label>
+                    <input type="number" class="form-control" name="amount" readonly value = "{{$packagePrice}}" required>
+                </div>
 
                 <div class="mb-3">
                     <label for="screenshot" class="form-label">Transaction Screenshot:</label>

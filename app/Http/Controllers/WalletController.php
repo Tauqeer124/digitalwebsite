@@ -15,4 +15,8 @@ class WalletController extends Controller
         // dd($transactions);
         return view('wallet', compact('transactions'));
     }
+    public function AllUserWallet(){
+        $transactions = Wallet::all();
+        return view('wallet', compact('transactions'));
+    }
 }

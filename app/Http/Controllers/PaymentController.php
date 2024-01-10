@@ -16,8 +16,10 @@ class PaymentController extends Controller
     {
         $package = Package::findOrFail($req->package_id);
         $package_id = $package->id;
+        $package_price = $package->price; 
         return view('payment', [
             'packageId' => $package_id,
+            'packagePrice' => $package_price,
             'accountTitle' => 'Digital Ocean',
             'accountNumber' => '458-9658-5874',
 
@@ -57,6 +59,7 @@ class PaymentController extends Controller
         $payment->account_title = $request->account_title;
         $payment->account_type = $request->account_type;
         $payment->account_no = $request->account_no;
+        $payment->amount = $request->amount;
 
         $payment->status = 'pending';
         // dd($payment);
@@ -77,7 +80,7 @@ class PaymentController extends Controller
         $tree = new Tree();
         $tree->user_id = $user_id;
         $tree->package_id = $package_id;
-       
+
         $tree->parent_id = 1;
 
         // If the current user has a referrer, insert the referrer's ID
@@ -88,7 +91,7 @@ class PaymentController extends Controller
             // Set the parent referrer ID as the senior if it exists, otherwise use the referrer ID
             $senior_id = $parentReferrerId;
             $tree->senior_id = $senior_id;
-          
+
 
 
             // Check the current block_id for the user's referral link
@@ -195,13 +198,12 @@ class PaymentController extends Controller
                 case 6:
                     $ccommissionRate = 0;
                     if ($packagePrice == 1000.00) {
-                       
+
                         $ccommissionRate = 0.30;
                         $ccommissionAmount = $packagePrice * $ccommissionRate;
                         $wallet->user_id = 1;
                         $wallet->total_balance = $ccommissionAmount;
                         $wallet->description = 'income from new user registration';
-
                     } elseif ($packagePrice == 3000.00) {
                         dd('31');
                         $ccommissionRate = 0.31;
@@ -210,7 +212,7 @@ class PaymentController extends Controller
                         $wallet->total_balance = $ccommissionAmount;
                         $wallet->description = 'income from new user registration';
                     } elseif ($packagePrice == 5000.00) {
-                        dd('fjfkjf');
+                 
                         $ccommissionRate = 0.32;
                         $ccommissionAmount = $packagePrice * $ccommissionRate;
                         $wallet->user_id = 1;
@@ -259,7 +261,7 @@ class PaymentController extends Controller
 
         // Update points in the wallet
         $wallet->points_reward += $points;
-       
+
         $wallet->description = 'comision earned from buying package';
 
         $wallet->save();
@@ -284,7 +286,7 @@ class PaymentController extends Controller
 
         return redirect()->back()->with('success', 'Payment status changed successfully.');
     }
-   
+
     public function convertpoint()
     {
         return view('convertpoint');
@@ -292,7 +294,7 @@ class PaymentController extends Controller
     public function convertAndAddToWallet(Request $request)
     {
         $userId = Auth::user()->id;
-        
+
 
         $Wallet = Wallet::where('user_id', $userId)->first();
         //  dd($Wallet->points_reward);
@@ -353,35 +355,32 @@ class PaymentController extends Controller
         }
 
         return redirect()->back()->with('error', 'User not found.');
-
     }
     public function addPoints(Request $request, $userId)
     {
-        
-            // Validate and process the request to add points to the user
-            $request->validate([
-                'points' => 'required|integer|min:1',
-            ]);
 
-            $user = User::find($userId);
+        // Validate and process the request to add points to the user
+        $request->validate([
+            'points' => 'required|integer|min:1',
+        ]);
 
-            if ($user) {
-                $Wallet = Wallet::where('user_id', $userId)->first();
+        $user = User::find($userId);
 
-                // Add points to the user
-                $Wallet->user_id = $userId;
-                $Wallet->description = 'points earned from bonus by admin';
-                $Wallet->points_reward	 += $request->input('points');
-               
-                // dd($Wallet->description);
+        if ($user) {
+            $Wallet = Wallet::where('user_id', $userId)->first();
 
-                $Wallet->save();
+            // Add points to the user
+            $Wallet->user_id = $userId;
+            $Wallet->description = 'points earned from bonus by admin';
+            $Wallet->points_reward     += $request->input('points');
 
-                return redirect()->route('admin.showAddPointsForm', ['user' => $user->id])->with('success', 'Points added successfully.');
-            }
+            // dd($Wallet->description);
 
-            return redirect()->back()->with('error', 'User not found.');
-      
+            $Wallet->save();
+
+            return redirect()->route('admin.showAddPointsForm', ['user' => $user->id])->with('success', 'Points added successfully.');
+        }
+
+        return redirect()->back()->with('error', 'User not found.');
     }
-
 }
