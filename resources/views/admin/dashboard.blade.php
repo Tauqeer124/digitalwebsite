@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="row">
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl-4">
         <div class="card card-body bg-blue-400 has-bg-image">
             <div class="media">
                 <div class="media-body">
@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl-4">
         <div class="card card-body bg-danger-400 has-bg-image">
             <div class="media">
                 <div class="media-body">
@@ -33,36 +33,24 @@
         </div>
     </div>
 
-    <div class="col-sm-6 col-xl-3">
-        <div class="card card-body bg-success-400 has-bg-image">
-            <div class="media">
-                <div class="mr-3 align-self-center">
-                    <i class="icon-pointer icon-3x opacity-75"></i>
-                </div>
-
-                <div class="media-body text-right">
-                    <h3 class="mb-0"></h3>
-                    <span class="text-uppercase font-size-xs">Total Administrators</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-xl-3">
+    <div class="col-sm-6 col-xl-4">
         <div class="card card-body bg-indigo-400 has-bg-image">
             <div class="media">
-                <div class="mr-3 align-self-center">
-                    <i class="icon-user icon-3x opacity-75"></i>
+                <div class="media-body">
+                    <h3 class="mb-0">{{$point}}</h3>
+                    <span class="text-uppercase font-size-xs">Total Points Earned</span>
                 </div>
 
-                <div class="media-body text-right">
-                    <h3 class="mb-0"></h3>
-                    <span class="text-uppercase font-size-xs">Total Parents</span>
+                <div class="ml-3 align-self-center">
+                    <i class="icon-user icon-3x opacity-75"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
+  
+
+   
+    <div class="col-sm-6 col-xl-4">
         <h6>Total Income <small class="text-muted">(last 30 days)</small></h6>
         <div class="card card-body bg-success bg-indigo-400 has-bg-image">
             <div class="media">
@@ -71,14 +59,14 @@
                 </div>
 
                 <div class="media-body text-right">
-                    <h3 class="mb-0">{{ $balance }}</h3>
+                    <h3 class="mb-0">{{ $balance->total_balance }}</h3>
                     <span class="text-uppercase font-size-xs">Wallet balance</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-        <h6>Total Expense <small class="text-muted">(last 30 days)</small></h6>
+    <div class="col-sm-6 col-xl-4">
+        <h6>Total Withdraw<small class="text-muted">(last 30 days)</small></h6>
         <div class="card card-body bg-indigo-400 bg-info has-bg-image">
             <div class="media">
                 <div class="mr-3 align-self-center">
@@ -86,31 +74,13 @@
                 </div>
 
                 <div class="media-body text-right">
-                    <h3 class="mb-0"></h3>
-                    <span class="text-uppercase font-size-xs">Total expenses</span>
+                    <h3 class="mb-0">{{$withdraw}}</h3>
+                    <span class="text-uppercase font-size-xs">Total withdraw</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-xl-3">
-        <h6>
-            
-            <small class="text-muted">(last 30 days)</small>
-        </h6>
-        <div class="card card-body bg-secondary bg-indigo-400 has-bg-image">
-            <div class="media">
-                <div class="mr-3 align-self-center">
-                        <span class="icon-credit-card icon-3x"></span>
-                </div>
-
-                <div class="media-body text-right">
-                    <h3 class="mb-0"></h3>
-                    <span class="text-uppercase font-size-xs">Total
-                        </span>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 @endsection

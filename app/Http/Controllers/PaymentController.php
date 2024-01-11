@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Package;
-use App\Models\Payment;
 use App\Models\Tree;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Models\Package;
+use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
@@ -37,6 +38,7 @@ class PaymentController extends Controller
             'account_type' => 'required|in:Bank,Jazz-Cash,Easypaisa',
 
         ]);
+       
 
         // Initialize $screenshotName to null
         $screenshotName = null;
@@ -73,6 +75,8 @@ class PaymentController extends Controller
 
         $user_id = Auth::user()->id;
 
+  
+
         // Check if the current user has a referrer
         $referral_id = User::where('id', $user_id)->value('referrer_id');
 
@@ -92,7 +96,12 @@ class PaymentController extends Controller
             $senior_id = $parentReferrerId;
             $tree->senior_id = $senior_id;
 
+            $ptotalBalance= Wallet::where('user_id', $tree->parent_id)->max('total_balance');
+            $stotalBalance= Wallet::where('user_id', $tree->senior_id)->max('total_balance');
+            $autonetBalance= Wallet::where('user_id', '1')->max('total_balance');
 
+
+           
 
             // Check the current block_id for the user's referral link
             $currentBlock = Tree::where('parent_id', $referral_id)
@@ -161,8 +170,9 @@ class PaymentController extends Controller
                     // First member, give 65% of the 1st package
 
                     $wallet->user_id = $tree->parent_id;
-                    $wallet->total_balance = $commissionAmount;
+                    $wallet->commission = $commissionAmount;
                     $wallet->description = 'income from referal comission';
+                    $wallet->total_balance = DB::raw("total_balance + $ptotalBalance + $commissionAmount");
 
 
                     break;
@@ -170,8 +180,10 @@ class PaymentController extends Controller
                     // Second member, give 70% of the 2nd package
 
                     $wallet->user_id = $tree->parent_id;
-                    $wallet->total_balance = $commissionAmount;
+                    $wallet->commission = $commissionAmount;
                     $wallet->description = 'income from referal comission';
+                    $wallet->total_balance = DB::raw("total_balance + $ptotalBalance + $commissionAmount");
+
 
 
                     break;
@@ -180,8 +192,10 @@ class PaymentController extends Controller
 
                     // dd($commissionAmount);
                     $wallet->user_id = $tree->senior_id ?? 1;
-                    $wallet->total_balance = $commissionAmount;
+                    $wallet->commission = $commissionAmount;
                     $wallet->description = 'income from referal comission';
+                    $wallet->total_balance = DB::raw("total_balance + $stotalBalance + $commissionAmount");
+
 
 
                     break;
@@ -190,8 +204,10 @@ class PaymentController extends Controller
                     // Fourth or fifth member, give 80% of the 4th package
 
                     $wallet->user_id = $tree->parent_id;
-                    $wallet->total_balance = $commissionAmount;
+                    $wallet->commission = $commissionAmount;
                     $wallet->description = 'income from referal comission';
+                    $wallet->total_balance = DB::raw("total_balance + $ptotalBalance + $commissionAmount");
+
 
 
                     break;
@@ -202,28 +218,37 @@ class PaymentController extends Controller
                         $ccommissionRate = 0.30;
                         $ccommissionAmount = $packagePrice * $ccommissionRate;
                         $wallet->user_id = 1;
-                        $wallet->total_balance = $ccommissionAmount;
+                        $wallet->commission = $ccommissionAmount;
                         $wallet->description = 'income from new user registration';
+                        $wallet->total_balance = DB::raw("total_balance + $autonetBalance + $ccommissionAmount");
+
+
                     } elseif ($packagePrice == 3000.00) {
-                        dd('31');
+             
                         $ccommissionRate = 0.31;
                         $ccommissionAmount = $packagePrice * $ccommissionRate;
                         $wallet->user_id = 1;
-                        $wallet->total_balance = $ccommissionAmount;
+                        $wallet->commission= $ccommissionAmount;
                         $wallet->description = 'income from new user registration';
+                        $wallet->total_balance = DB::raw("total_balance + $autonetBalance + $ccommissionAmount");
+
                     } elseif ($packagePrice == 5000.00) {
                  
                         $ccommissionRate = 0.32;
                         $ccommissionAmount = $packagePrice * $ccommissionRate;
                         $wallet->user_id = 1;
-                        $wallet->total_balance = $ccommissionAmount;
+                        $wallet->commission= $ccommissionAmount;
                         $wallet->description = 'income from new user registration';
+                        $wallet->total_balance = DB::raw("total_balance + $$autonetBalance + $ccommissionAmount");
+
                     } elseif ($packagePrice == 10000.00) {
                         $ccommissionRate = 0.33;
                         $ccommissionAmount = $packagePrice * $ccommissionRate;
                         $wallet->user_id = 1;
-                        $wallet->total_balance = $ccommissionAmount;
+                        $wallet->commission= $ccommissionAmount;
                         $wallet->description = 'income from new user registration';
+                        $wallet->total_balance = DB::raw("total_balance + $autonetBalance + $ccommissionAmount");
+
                     }
 
                     break;
@@ -262,7 +287,7 @@ class PaymentController extends Controller
         // Update points in the wallet
         $wallet->points_reward += $points;
 
-        $wallet->description = 'comision earned from buying package';
+        $wallet->description = 'points earned by refer user';
 
         $wallet->save();
 
@@ -297,7 +322,11 @@ class PaymentController extends Controller
 
 
         $Wallet = Wallet::where('user_id', $userId)->first();
-        //  dd($Wallet->points_reward);
+        
+        $balance =Wallet::where('user_id', $userId)->orderBy('created_at', 'desc')->first();
+        $perviousBalance = $balance->total_balance;
+      
+
 
         $points = $Wallet->points_reward;
         // dd($points);
@@ -324,16 +353,19 @@ class PaymentController extends Controller
         if ($rupees > 0) {
 
             // Deduct the converted points
-
+    
             $Wallet->points_reward -= $convertedPoints;
             $Wallet->points_reward = max(0, $Wallet->points_reward); // Ensure points don't go negative
             $Wallet->save();
             $userWallet = new Wallet();
             $userWallet->user_id = $userId;
             $userWallet->description = 'points converted into amount';
+           
 
             // Add the converted rupees to the wallet balance
-            $userWallet->total_balance += $rupees;
+             $userWallet->commission = $rupees;
+             $userWallet->total_balance =   $perviousBalance + $rupees; // Fix the syntax here
+            //  dd($userWallet->total_balance);
 
             // Save the changes to the user's wallet
             $userWallet->save();

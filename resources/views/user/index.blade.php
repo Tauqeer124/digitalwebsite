@@ -41,6 +41,8 @@
                             @method('delete')
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
+                        <a href="{{ route('admin.showAddPointsForm', $user->id) }}" class="btn btn-sm btn-primary">Give Bonus points</a>
+
                     </td>
 
                     <!-- Display more columns as needed -->

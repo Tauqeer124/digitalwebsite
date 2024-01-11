@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('total_balance')->default(0);
+            $table->integer('commission')->default(0);
+
             $table->string('description')->default('referal points');
             $table->integer('points_reward')->default(0);
+            $table->integer('total_balance')->default(0);
             $table->integer('withdraw_amount')->default(0);
             $table->timestamps();
 

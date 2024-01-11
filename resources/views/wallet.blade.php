@@ -10,10 +10,17 @@
  
     <div class="card-body">
         @php
+        
+            $totalBalance = App\Models\Wallet::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->first();
+         
+
             $totalPoints = App\Models\Wallet::where('user_id', Auth::user()->id)->sum('points_reward');
+            // $totalBalance = App\Models\Wallet::where('user_id', Auth::user()->id)->max('total_balance');
+
         @endphp
 
         @if(count($transactions) > 0)
+        @if (Auth::user()->isAdmin == 0)
             @if($totalPoints >= 40000)
                 <form action="{{ route('convertAndAddToWallet') }}" method="post">
                     @csrf
@@ -21,6 +28,24 @@
                     <button type="submit" class="btn btn-primary">Convert Points</button>
                 </form>
             @endif
+           
+            @if($totalBalance->total_balance >= 50000.00)
+            <form action="{{ route('withdrawAmount') }}" method="post">
+                @csrf
+                <input hidden name="userId" value="{{ Auth::user()->id }}">
+              
+
+                <button type="submit" class="btn btn-success">Withdraw $10,000</button>
+            </form>
+        @elseif($totalBalance->total_balance >= 100000.00)
+            <form action="{{ route('withdrawAmount') }}" method="post">
+                @csrf
+                <input hidden name="userId" value="{{ Auth::user()->id }}">
+                <button type="submit" class="btn btn-success">Withdraw $20,000</button>
+            </form>
+        @endif
+        @endif
+
             <table class="table">
                 <thead>
                     <tr>
@@ -38,7 +63,7 @@
                             <td>{{ $transaction->user->name }}</td>
                             <td>{{ $transaction->total_balance }}</td>
                             <td>{{ $transaction->points_reward }}</td>
-                            <td>${{ $transaction->Withdraw_amount }}</td>
+                            <td>{{ $transaction->withdraw_amount }}</td>
                            
                         </tr>
                     @endforeach

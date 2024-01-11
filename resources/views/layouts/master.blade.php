@@ -11,7 +11,8 @@
     <meta name="author" content="MlM Website">
 
     <title> @yield('page_title') | {{ config('app.name') }} </title>
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-w3sPv4CkVb3nRG8eOlP6OIwlzDZu8dU//d5FUG8L/f2FmDw24C9q6JPjsFYOqh/zGHeNRNzN+ja9ypCqRHc02g==" crossorigin="anonymous" />
+
         <!-- ... other head elements ... -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

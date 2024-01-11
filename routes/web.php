@@ -73,6 +73,9 @@ Route::post('/admin/change-payment-status/{paymentId}/{newStatus}', [PaymentCont
 
 Route::post('/convert-and-add-to-wallet', [PaymentController::class, 'convertAndAddToWallet'])
     ->name('convertAndAddToWallet');
+    //withdraw
+    Route::post('/withdrawAmount', [WalletController::class, 'withdrawAmount'])
+    ->name('withdrawAmount');   
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/add-points/{user}', [PaymentController::class, 'showAddPointsForm'])->name('admin.showAddPointsForm');
 
@@ -106,6 +109,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::group(['prefix' => 'my_account'], function () {
     Route::get('/', [AuthController::class, 'account'])->name('my_account');
-    Route::put('/', [AuthController::class, 'update_profile'])->name('my_account.update');
+    Route::put('/', [AuthController::class, 'updateProfile'])->name('my_account.update');
     Route::put('/change_password', [AuthController::class, 'change_pass'])->name('change_password');
 });

@@ -109,7 +109,7 @@
                     </a>
                 @else
                     <a href="{{ route('show.wallet') }}" class="nav-link {{ Route::currentRouteName() == 'wallet' ? 'active' : '' }}">
-                        <i class="icon-book"></i> <span>My Wallet</span>
+                        <i class="icon-book"></i> <span>Ledger History</span>
                     </a>
                 @endif
             </li>

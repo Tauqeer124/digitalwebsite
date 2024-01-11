@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Wallet extends Model
 {
+    protected $fillable = [
+      'user_id',
+      'total_balance',
+      'description',
+      'points_reward',
+      'withdraw_amount',
+    ];
     use HasFactory;
     public function user()
 {
